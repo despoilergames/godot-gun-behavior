@@ -1,0 +1,135 @@
+[gd_scene load_steps=4 format=3 uid="uid://cjouuknrwxytk"]
+
+[ext_resource type="Script" path="res://examples/test_scene/test_scene.gd" id="1_e5168"]
+[ext_resource type="Script" path="res://addons/gun_behavor/gun_behavior.gd" id="2_87bvb"]
+[ext_resource type="PackedScene" path="res://examples/test_scene/debug_label.tscn" id="3_t200g"]
+
+[node name="TestScene" type="Node"]
+script = ExtResource("1_e5168")
+
+[node name="GunBehavior" type="Node" parent="."]
+script = ExtResource("2_87bvb")
+ammo = 10
+reserve_ammo = 100
+rate_of_fire = 800
+modes = Array[int]([2, 3, 4])
+magazine_size = 10
+max_reserve = 100
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 100
+alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Config"
+
+[node name="Holster" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "(Un)Holster"
+
+[node name="TriggerButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Pull Trigger"
+
+[node name="ReloadButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Reload"
+
+[node name="ModeButton" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Next Mode"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="GiveAmmo" type="Button" parent="MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Give 10 Ammo"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Output"
+
+[node name="Shots" parent="MarginContainer/HBoxContainer/VBoxContainer2" node_paths=PackedStringArray("target") instance=ExtResource("3_t200g")]
+layout_mode = 2
+target = NodePath("../../../../GunBehavior")
+custom_label = "Shots remaining"
+method_name = "get_shots_remaining"
+
+[node name="Mag" parent="MarginContainer/HBoxContainer/VBoxContainer2" node_paths=PackedStringArray("target") instance=ExtResource("3_t200g")]
+layout_mode = 2
+target = NodePath("../../../../GunBehavior")
+key = "ammo"
+custom_label = "Magazine"
+
+[node name="Reserve" parent="MarginContainer/HBoxContainer/VBoxContainer2" node_paths=PackedStringArray("target") instance=ExtResource("3_t200g")]
+layout_mode = 2
+target = NodePath("../../../../GunBehavior")
+key = "reserve_ammo"
+
+[node name="State" parent="MarginContainer/HBoxContainer/VBoxContainer2" node_paths=PackedStringArray("target") instance=ExtResource("3_t200g")]
+layout_mode = 2
+target = NodePath("../../../../GunBehavior")
+custom_label = "State"
+method_name = "get_state_name"
+
+[node name="Mode" parent="MarginContainer/HBoxContainer/VBoxContainer2" node_paths=PackedStringArray("target") instance=ExtResource("3_t200g")]
+layout_mode = 2
+target = NodePath("../../../../GunBehavior")
+custom_label = "Mode"
+method_name = "get_mode_name"
+
+[node name="CanShoot" parent="MarginContainer/HBoxContainer/VBoxContainer2" node_paths=PackedStringArray("target") instance=ExtResource("3_t200g")]
+layout_mode = 2
+target = NodePath("../../../../GunBehavior")
+method_name = "can_shoot"
+
+[node name="CanReload" parent="MarginContainer/HBoxContainer/VBoxContainer2" node_paths=PackedStringArray("target") instance=ExtResource("3_t200g")]
+layout_mode = 2
+target = NodePath("../../../../GunBehavior")
+method_name = "can_reload"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Signal Log"
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SignalLog" type="RichTextLabel" parent="MarginContainer/HBoxContainer/VBoxContainer2/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/Holster" to="." method="_on_holster_pressed"]
+[connection signal="button_down" from="MarginContainer/HBoxContainer/VBoxContainer/TriggerButton" to="GunBehavior" method="pull_trigger"]
+[connection signal="button_up" from="MarginContainer/HBoxContainer/VBoxContainer/TriggerButton" to="GunBehavior" method="release_trigger"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/ReloadButton" to="GunBehavior" method="start_reload"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/ModeButton" to="GunBehavior" method="next_mode"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/VBoxContainer/GiveAmmo" to="GunBehavior" method="add_reserve" binds= [10]]

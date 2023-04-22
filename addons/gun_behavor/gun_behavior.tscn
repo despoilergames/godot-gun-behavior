@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bxpgd55ehwkb3"]
+
+[ext_resource type="Script" path="res://addons/gun_behavor/gun_behavior.gd" id="1_hjlcl"]
+
+[node name="BaseGunBehavior" type="Node"]
+script = ExtResource("1_hjlcl")

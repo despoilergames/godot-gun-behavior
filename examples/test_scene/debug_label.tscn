@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://examples/test_scene/debug_label.gd" id="1_i5tca"]
+
+[node name="DebugLabel" type="HBoxContainer"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 26.0
+grow_horizontal = 2
+size_flags_horizontal = 3
+script = ExtResource("1_i5tca")
+
+[node name="KeyLabel" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Key"
+
+[node name="ValueLabel" type="Label" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Value"
